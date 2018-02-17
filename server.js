@@ -10,7 +10,13 @@ var Article = require("./models/Article.js");
 var request = require("request");
 var cheerio = require("cheerio");
 
+// If deployed, use the deployed database
+var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoScraper";
+
+// Set mongoose to leverage built in JavaScript ES6 Promises
+// Connect to the Mongo DB
 mongoose.Promise = Promise;
+mongoose.connect(MONGODB_URI);
 
 var port = process.env.PORT || 3000
 
@@ -31,7 +37,7 @@ app.engine("handlebars", exphbs({
 }));
 app.set("view engine", "handlebars");
 
-mongoose.connect("mongodb://https://git.heroku.com/mongo-news-scrapers.git");
+// mongoose.connect("mongodb://https://git.heroku.com/mongo-news-scrapers.git");
 var db = mongoose.connection;
 
 db.on("error", function(error) {
