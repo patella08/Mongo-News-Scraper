@@ -37,7 +37,6 @@ app.engine("handlebars", exphbs({
 }));
 app.set("view engine", "handlebars");
 
-// mongoose.connect("mongodb://https://git.heroku.com/mongo-news-scrapers.git");
 var db = mongoose.connection;
 
 db.on("error", function(error) {
