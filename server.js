@@ -3,33 +3,30 @@ var bodyParser = require("body-parser");
 var logger = require("morgan");
 var mongoose = require("mongoose");
 var path = require("path");
-
-var Note = require("./models/Note.js");
-var Article = require("./models/Article.js");
+var exphbs = require("express-handlebars");
 
 var request = require("request");
 var cheerio = require("cheerio");
 
+var Note = require("./models/Note.js");
+var Article = require("./models/Article.js");
+
+var port = process.env.PORT || 3000;
+
+var app = express();
+
+app.use(logger("dev"));
+app.use(bodyParser.urlencoded({ extended: false }));
+
+app.use(express.static("public"));
+
 // If deployed, use the deployed database
-var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoScraper";
+var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
 
 // Set mongoose to leverage built in JavaScript ES6 Promises
 // Connect to the Mongo DB
 mongoose.Promise = Promise;
 mongoose.connect(MONGODB_URI);
-
-var port = process.env.PORT || 3000
-
-var app = express();
-
-app.use(logger("dev"));
-app.use(bodyParser.urlencoded({
-  extended: false
-}));
-
-app.use(express.static("public"));
-
-var exphbs = require("express-handlebars");
 
 app.engine("handlebars", exphbs({
     defaultLayout: "main",
